@@ -19,6 +19,6 @@ async function bootstrap() {
     origin: ['http://assets-fe.araden.top'],
   });
 
-  await app.listen(3000);
+  await app.listen(10086);
 }
 bootstrap();

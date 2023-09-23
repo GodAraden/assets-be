@@ -6,6 +6,7 @@ import {
   UseInterceptors,
   HttpException,
   HttpStatus,
+  Body,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { writeFile } from 'fs/promises';
@@ -21,12 +22,13 @@ export class AppController {
   async getHello(
     @Headers('upload-assets-key') uploadAssetsKey: string,
     @UploadedFile() asset: Express.Multer.File,
+    @Body('hold') hold: string,
   ) {
     const key = MD5(parsed.key + new Date().toLocaleDateString()).toString();
 
     if (uploadAssetsKey === key) {
       const filename = asset.originalname.split('.');
-      filename.push(String(+new Date()), filename.pop());
+      if (hold === '') filename.push(String(+new Date()), filename.pop());
       await writeFile(`assets/${filename.join('.')}`, asset.buffer);
       return filename.join('.');
     } else {
