@@ -19,12 +19,14 @@ const { parsed } = configEnv({ path: '.env.local' });
 export class AppController {
   @Post('')
   @UseInterceptors(FileInterceptor('asset'))
-  async getHello(
+  async upload(
     @Headers('upload-assets-key') uploadAssetsKey: string,
     @UploadedFile() asset: Express.Multer.File,
     @Body('hold') hold: string,
   ) {
-    const key = MD5(parsed.key + new Date().toLocaleDateString()).toString();
+    const key = MD5(
+      parsed.key + new Date().toLocaleDateString('zh-CN'),
+    ).toString();
 
     if (uploadAssetsKey === key) {
       const filename = asset.originalname.split('.');
