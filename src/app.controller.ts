@@ -23,13 +23,14 @@ export class AppController {
     @Headers('upload-assets-key') uploadAssetsKey: string,
     @UploadedFile() asset: Express.Multer.File,
     @Body('hold') hold: string,
+    @Body('name') name: string,
   ) {
     const key = MD5(
       parsed.key + new Date().toLocaleDateString('zh-CN'),
     ).toString();
 
     if (uploadAssetsKey === key) {
-      const filename = asset.originalname.split('.');
+      const filename = name.split('.');
       if (hold === '') filename.push(String(+new Date()), filename.pop());
       await writeFile(`assets/${filename.join('.')}`, asset.buffer);
       return filename.join('.');
