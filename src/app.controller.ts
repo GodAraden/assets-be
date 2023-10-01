@@ -1,4 +1,5 @@
 import {
+  Get,
   Post,
   Headers,
   Controller,
@@ -9,7 +10,7 @@ import {
   Body,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { writeFile } from 'fs/promises';
+import { readdir, writeFile } from 'fs/promises';
 import { config as configEnv } from 'dotenv';
 import { MD5 } from 'crypto-js';
 
@@ -17,6 +18,11 @@ const { parsed } = configEnv({ path: '.env.local' });
 
 @Controller()
 export class AppController {
+  @Get('')
+  getAllAssets() {
+    return readdir('assets');
+  }
+
   @Post('')
   @UseInterceptors(FileInterceptor('asset'))
   async upload(
