@@ -31,6 +31,8 @@ export class AppController {
     @Body('hold') hold: string,
     @Body('name') name: string,
   ) {
+    if (!asset) throw new HttpException('Need Asset', HttpStatus.BAD_REQUEST);
+
     const key = MD5(
       parsed.key + new Date().toLocaleDateString('zh-CN'),
     ).toString();
