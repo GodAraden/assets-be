@@ -16,7 +16,7 @@ async function bootstrap() {
   app.useStaticAssets('assets', { prefix: '' });
 
   app.enableCors({
-    origin: ['http://assets-fe.araden.top'],
+    origin: ['http://assets-fe.araden.top', 'https://assets-fe.araden.top'],
   });
 
   await app.listen(10086);
