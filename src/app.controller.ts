@@ -8,6 +8,7 @@ import {
   UseInterceptors,
   HttpException,
   HttpStatus,
+  Param,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { readdir, writeFile } from 'fs/promises';
@@ -18,9 +19,14 @@ const { parsed } = configEnv({ path: '.env.local' });
 
 @Controller()
 export class AppController {
-  @Get('')
-  getAllAssets() {
-    return readdir('assets');
+  @Get('prefix/:str')
+  async getAssetsStartsWith(@Param('str') str: string) {
+    return (await readdir('assets')).filter((file) => file.startsWith(str));
+  }
+
+  @Get('suffix/:str')
+  async getAssetsEndsWith(@Param('str') str: string) {
+    return (await readdir('assets')).filter((file) => file.endsWith(str));
   }
 
   @Post('')
